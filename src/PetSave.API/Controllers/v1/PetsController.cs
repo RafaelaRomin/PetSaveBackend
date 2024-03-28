@@ -5,7 +5,7 @@ using PetSave.Application.Services.Interfaces;
 namespace PetSave.API.Controllers.v1;
 
 [ApiController]
-[Route("api/pets")]
+[Route("v1/pets")]
 public class PetsController(IPetService petService) : ControllerBase
 {
     [HttpGet]
