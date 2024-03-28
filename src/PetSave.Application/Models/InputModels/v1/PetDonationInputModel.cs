@@ -1,4 +1,6 @@
-﻿namespace PetSave.Application.Models.InputModels.v1;
+﻿using PetSave.Domain.Entities.v1;
+
+namespace PetSave.Application.Models.InputModels.v1;
 
 public class PetDonationInputModel
 {

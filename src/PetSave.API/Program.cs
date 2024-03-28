@@ -15,6 +15,8 @@ builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPetDonationRepository, PetDonationRepository>();
+builder.Services.AddScoped<IPetDonationService, PetDonationService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

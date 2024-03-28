@@ -43,13 +43,25 @@ public class PetService(IPetRepository petRepository) : IPetService
         var pet = await petRepository.GetById(id);
 
         if (pet is null)
-            throw new Exception("não encontrado o Id");
+            throw new Exception("Pet não encontrado");
         
         pet.Update(inputModel.Name, inputModel.Race, inputModel.Weight, inputModel.Age, inputModel.Description);
 
         await petRepository.UpdateAsync(pet);
 
         return pet;
+    }
+
+    public async Task<bool> ChangeStatus(Guid id)
+    {
+        var pet = await petRepository.GetById(id);
+        if (pet is null)
+            throw new Exception("Pet não encontrado");
+        
+        pet.UpdateUnableStatus();
+        await petRepository.UpdateAsync(pet);
+
+        return true;
     }
 
     public async Task<bool> DeleteAsync(Guid id)

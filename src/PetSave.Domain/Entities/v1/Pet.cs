@@ -18,7 +18,7 @@ public class Pet(
     public double Weight { get; private set; } = weight;
     public double Age { get; private set; } = age;
     public string? Description { get; private set; } = description;
-    public DateTime? LastDonation { get;}
+    public DateTime? LastDonation { get; }
     public DonationStatus Status { get; set; } = DonationStatus.Available;
     public Guid IdTutor { get; private set; } = idTutor;
     public User Tutor { get; private set; }
@@ -49,5 +49,10 @@ public class Pet(
         Weight = weight;
         Age = age;
         Description = description;
+    }
+
+    public void UpdateUnableStatus()
+    {
+        Status = DonationStatus.Unable;
     }
 }

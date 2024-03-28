@@ -4,7 +4,7 @@ namespace PetSave.Domain.Repositories.Interfaces;
 
 public interface IPetDonationRepository
 {
-    Task<List<PetDonation>> GetAllAsync();
-    IQueryable<PetDonation> GetByIdAsync(Guid id);
-    Task CreateAsync(PetDonation donation);
+    Task<List<PetDonation?>> GetAllAsync();
+    Task<PetDonation?> GetByIdAsync(Guid id);
+    Task CreateAsync(PetDonation? donation);
 }

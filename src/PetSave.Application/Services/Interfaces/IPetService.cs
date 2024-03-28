@@ -9,5 +9,6 @@ public interface IPetService
     Task<Pet> GetByIdAsync(Guid id);
     Task<Pet> CreateAsync(PetInputModel inputModel);
     Task<Pet> UpdateAsync(Guid id, PetInputModel inputModel);
+    Task<bool> ChangeStatus(Guid id);
     Task<bool> DeleteAsync(Guid id);
 }
