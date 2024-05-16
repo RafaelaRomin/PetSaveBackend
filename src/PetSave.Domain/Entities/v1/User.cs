@@ -1,14 +1,19 @@
 ﻿namespace PetSave.Domain.Entities.v1;
 
-public class User(string fullName, string city, string state, string email, string phoneNumber)
-    : BaseEntity
+public class User(
+    string fullName, 
+    string city, 
+    string state, 
+    string email, 
+    string phoneNumber
+    ) : BaseEntity
 {
     public string FullName { get; private set; } = fullName;
     public string City { get; private set; } = city;
     public string State { get; private set; } = state;
     public string Email { get; private set; } = email;
     public string PhoneNumber { get; private set; } = phoneNumber;
-    public List<Pet> Pets { get; private set; }
+    public List<Pet> Pets { get; }
 
     public static User Create(
         string fullName, 

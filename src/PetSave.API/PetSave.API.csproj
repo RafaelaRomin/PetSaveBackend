@@ -16,4 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\PetSave.Infra\PetSave.Infra.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="PetSave.API.http" />
+  </ItemGroup>
 </Project>

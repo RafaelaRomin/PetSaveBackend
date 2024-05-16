@@ -26,7 +26,8 @@ public static class MappingPetDonationViewModel
             NamePet = petDonation.Pet.Name,
             DonationDate = petDonation.DonationDate.ToString("dd/MM/yyy"),
             StatusPet = petDonation.Pet.Status.ToString(),
-            NameTutor = petDonation.Pet.Tutor.FullName
+            NameTutor = petDonation.Pet.Tutor.FullName,
+            Email = petDonation.Pet.Tutor.Email
         };
     }
 }

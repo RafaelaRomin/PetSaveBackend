@@ -15,6 +15,8 @@ public class UserService (IUserRepository userRepository) : IUserService
     public async Task<User> GetByIdAsync(Guid id)
     {
         var user = await userRepository.GetById(id);
+        if (user is null) 
+            throw new Exception("Usuário não encontrado!");
         
         return user;
     }

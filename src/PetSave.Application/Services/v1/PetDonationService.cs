@@ -3,6 +3,7 @@ using PetSave.Application.Models.ViewModels.MappingViewModels;
 using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
 using PetSave.Domain.Entities.v1;
+using PetSave.Domain.Enums.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
 namespace PetSave.Application.Services.v1;
@@ -38,7 +39,12 @@ public class PetDonationService (
         if (pet is null)
             throw new Exception("Pet não encontrado");
 
-        var donation = new PetDonation(inputModel.IdPet, inputModel.DonationDate);
+        if (pet.Status == DonationStatus.Unable)
+            throw new Exception("Pet não está apto para doação");
+
+        var donation = new PetDonation(
+            inputModel.IdPet, 
+            inputModel.DonationDate);
         
         await petDonationRepository.CreateAsync(donation);
 

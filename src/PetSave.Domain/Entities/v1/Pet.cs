@@ -55,4 +55,9 @@ public class Pet(
     {
         Status = DonationStatus.Unable;
     }
+
+    public void UpdateAvailableStatus()
+    {
+        Status = DonationStatus.Available;
+    }
 }

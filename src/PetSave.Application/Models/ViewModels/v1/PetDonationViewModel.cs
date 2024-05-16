@@ -6,4 +6,5 @@ public class PetDonationViewModel
     public string DonationDate { get; set; }
     public string StatusPet { get; set; }
     public string NameTutor { get; set; }
+    public string Email { get; set; }   
 }
