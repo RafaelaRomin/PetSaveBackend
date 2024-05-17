@@ -5,7 +5,7 @@ namespace PetSave.Application.Services.Interfaces;
 
 public interface IPetService
 {
-    Task<IEnumerable<Pet>> GetAllAsync();
+    Task<IEnumerable<Pet>> GetAllAsync(int? specie);
     Task<Pet> GetByIdAsync(Guid id);
     Task<Pet> CreateAsync(PetInputModel inputModel);
     Task<Pet> UpdateAsync(Guid id, PetInputModel inputModel);

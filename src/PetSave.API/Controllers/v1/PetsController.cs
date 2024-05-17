@@ -9,9 +9,9 @@ namespace PetSave.API.Controllers.v1;
 public class PetsController(IPetService petService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetByFilter([FromQuery] int? specie)
     {
-        var pets = await petService.GetAllAsync();
+        var pets = await petService.GetAllAsync(specie);
 
         return Ok(pets);
     }

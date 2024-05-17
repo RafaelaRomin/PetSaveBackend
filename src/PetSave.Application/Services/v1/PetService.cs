@@ -7,9 +7,9 @@ namespace PetSave.Application.Services.v1;
 
 public class PetService(IPetRepository petRepository) : IPetService
 {
-    public async Task<IEnumerable<Pet>> GetAllAsync()
+    public async Task<IEnumerable<Pet>> GetAllAsync(int? specie)
     {
-        return await petRepository.GetAllAsync();
+        return await petRepository.GetAllAsync(specie);
     }
 
     public async Task<Pet> GetByIdAsync(Guid id)

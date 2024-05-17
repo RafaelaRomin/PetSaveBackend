@@ -12,7 +12,7 @@ public static class MappingPetDonationViewModel
             select new PetDonationViewModel
             {
                 NamePet = petDonation.Pet.Name,
-                DonationDate = petDonation.DonationDate.ToString("dd/MM/yyy"),
+                DonationDate = petDonation.DonationDate.ToString("dd/MM/yyyy"),
                 StatusPet = petDonation.Pet.Status.ToString(),
                 NameTutor = petDonation.Pet.Tutor.FullName
                     
@@ -24,7 +24,7 @@ public static class MappingPetDonationViewModel
         return new PetDonationViewModel
         {
             NamePet = petDonation.Pet.Name,
-            DonationDate = petDonation.DonationDate.ToString("dd/MM/yyy"),
+            DonationDate = petDonation.DonationDate.ToString("dd/MM/yyyy"),
             StatusPet = petDonation.Pet.Status.ToString(),
             NameTutor = petDonation.Pet.Tutor.FullName,
             Email = petDonation.Pet.Tutor.Email

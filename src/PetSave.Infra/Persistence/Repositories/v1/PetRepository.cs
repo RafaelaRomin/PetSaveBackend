@@ -7,9 +7,15 @@ namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
 {
-    public async Task<List<Pet>> GetAllAsync()
+    public async Task<List<Pet>> GetAllAsync(int? specie)
     {
-        return await dbContext.Pets.ToListAsync();
+        IQueryable<Pet> query = dbContext.Pets;
+
+        if (specie.HasValue)
+        {
+            query = query.Where(s => (int)s.Species == specie.Value);
+        }
+        return await query.ToListAsync();
     }
 
     public async Task<Pet?> GetById(Guid id)

@@ -5,7 +5,7 @@ namespace PetSave.Domain.Repositories.Interfaces;
 
 public interface IPetRepository
 {
-    Task <List<Pet>> GetAllAsync();
+    Task <List<Pet>> GetAllAsync(int? specie);
     Task<Pet?> GetById(Guid id);
     Task<List<Pet>> GetBySpecie(Species specie);
     Task AddAsync(Pet pet);
