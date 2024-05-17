@@ -23,11 +23,6 @@ public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
         return await dbContext.Pets.SingleOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task<List<Pet>> GetBySpecie(Species specie)
-    {
-        return await dbContext.Pets.Where(s => s.Species == specie).ToListAsync();
-    }
-
     public async Task AddAsync(Pet pet)
     {
         await dbContext.Pets.AddAsync(pet);

@@ -7,7 +7,6 @@ public interface IPetRepository
 {
     Task <List<Pet>> GetAllAsync(int? specie);
     Task<Pet?> GetById(Guid id);
-    Task<List<Pet>> GetBySpecie(Species specie);
     Task AddAsync(Pet pet);
     Task DeleteAsync(Pet pet);
     Task UpdateAsync(Pet pet);
