@@ -2,7 +2,7 @@
 using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
-namespace PetSave.Infra.Persistence.Repositories.v1;
+namespace PetSave.Infra.Migrations.Persistence.Repositories.v1;
 
 public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
 {
@@ -33,5 +33,11 @@ public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
         dbContext.Remove(user);
         await dbContext.SaveChangesAsync();
     }
-    
+
+    public async Task<User> GetByEmailAsync(string email)
+    {
+        return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+    }
+
+
 }

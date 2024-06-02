@@ -1,7 +1,9 @@
+using FluentValidation;
 using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Models.ViewModels.MappingViewModels;
 using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
+using PetSave.Application.Validators.v1;
 using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Enums.v1;
 using PetSave.Domain.Repositories.Interfaces;
@@ -11,14 +13,14 @@ namespace PetSave.Application.Services.v1;
 public class PetDonationService (
     IPetDonationRepository petDonationRepository, 
     IPetRepository petRepository,
-    IPetService petService
-    ) : IPetDonationService
+    IPetService petService)
+    : IPetDonationService
 {
     public async Task<List<PetDonationViewModel>> GetAll()
     {
         var donations = await petDonationRepository.GetAllAsync();
 
-        var donationsViewModel = donations.ConvertPetDonationsViewModel();
+        var donationsViewModel = donations!.ConvertPetDonationsViewModel();
 
         return donationsViewModel.ToList();
     }
@@ -27,20 +29,27 @@ public class PetDonationService (
     {
         var donation = await petDonationRepository.GetByIdAsync(id);
 
-        var donationViewModel = donation.ConvertPetDonationViewModel();
+        var donationViewModel = donation!.ConvertPetDonationViewModel();
         
         return donationViewModel;
     }
 
     public async Task<PetDonationViewModel> CreateAsync(PetDonationInputModel inputModel)
     {
+        
+        //var validationContext = new ValidationContext<PetDonationInputModel>(inputModel);
+        
         var pet = await petRepository.GetById(inputModel.IdPet);
 
         if (pet is null)
             throw new Exception("Pet não encontrado");
-
+        
         if (pet.Status == DonationStatus.Unable)
             throw new Exception("Pet não está apto para doação");
+
+        //var validationResult = await petValidator.ValidateAsync(validationContext);
+        //if (!validationResult.IsValid)
+        //    throw new ValidationException(validationResult.Errors);
 
         var donation = new PetDonation(
             inputModel.IdPet, 
@@ -48,7 +57,9 @@ public class PetDonationService (
         
         await petDonationRepository.CreateAsync(donation);
 
-        await petService.ChangeStatus(pet.Id);
+        await petService.ChangeStatus(pet.Id, DonationStatus.Unable);
+
+        await ScheduleStatusChange(pet.Id, TimeSpan.FromDays(90));
 
         var donationDb = await petDonationRepository.GetByIdAsync(donation.Id);
         
@@ -58,5 +69,11 @@ public class PetDonationService (
         var donationViewModel = donationDb.ConvertPetDonationViewModel();
         
         return donationViewModel;
+    }
+    
+    private async Task ScheduleStatusChange(Guid petId, TimeSpan delay)
+    {
+        await Task.Delay(delay);
+        await petService.ChangeStatus(petId, DonationStatus.Available);
     }
 }

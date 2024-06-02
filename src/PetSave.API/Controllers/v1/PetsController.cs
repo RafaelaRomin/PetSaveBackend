@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Services.Interfaces;
 
@@ -37,6 +38,14 @@ public class PetsController(IPetService petService) : ControllerBase
     {
         await  petService.UpdateAsync(id, inputModel);
         
+        return NoContent();
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> TemporarilyUnavailable(Guid petId, int daysUnavailable)
+    {
+        await petService.TemporarilyUnavailable(petId, daysUnavailable);
+
         return NoContent();
     }
 

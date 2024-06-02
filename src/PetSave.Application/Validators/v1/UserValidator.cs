@@ -10,27 +10,27 @@ public class UserValidator : AbstractValidator<UserInputModel>
         
         RuleFor(user => user.Email)
             .NotEmpty()
-            .WithMessage("Email is required field.");
+            .WithMessage("Email é um campo obrigatório!");
 
         RuleFor(user => user.Email)
             .EmailAddress()
-            .WithMessage("Invalid email format");
+            .WithMessage("Formato de email inválido!");
         
         RuleFor(user => user.PhoneNumber)
             .NotEmpty()
-            .WithMessage("Phone number is required.");
+            .WithMessage("O campo telefone é obrigatório!");
         
         RuleFor(user => user.PhoneNumber)
             .Matches(@"^\+\d{1,3}\s?\d{1,14}(\s?\d{1,13})?$")
-            .WithMessage("Invalid phone number format.");
+            .WithMessage("Número invalido de telefone!");
         
         RuleFor(user => user.Password)
             .NotEmpty()
-            .WithMessage("Password is required.")
+            .WithMessage("O campo senha é obrigatório!")
             .MinimumLength(8)
-            .WithMessage("Password must be at least 8 characters long.")
+            .WithMessage("A senha deve ter pelo menos 8 caracteres.")
             .Matches(@"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$")
-            .WithMessage("Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.");
+            .WithMessage("A senha deve ter pelo menos 8 caracteres, conter pelo menos uma letra maiúscula, um número e um caractere especial.");
         
     }
 }

@@ -28,7 +28,8 @@ public class UserService (IUserRepository userRepository) : IUserService
             inputModel.City, 
             inputModel.State, 
             inputModel.Email,
-            inputModel.PhoneNumber);
+            inputModel.PhoneNumber,
+            inputModel.Password);
         
         await userRepository.AddAsync(user);
 
@@ -42,7 +43,7 @@ public class UserService (IUserRepository userRepository) : IUserService
         if (user is null) 
             throw new Exception("Usuário não encontrado!");
         
-        user.Update(inputModel.FullName, inputModel.City, inputModel.State, inputModel.Email, inputModel.PhoneNumber);
+        user.Update(inputModel.FullName, inputModel.City, inputModel.State, inputModel.Email, inputModel.PhoneNumber, inputModel.Password);
 
         await userRepository.UpdateAsync(user);
 
@@ -59,5 +60,12 @@ public class UserService (IUserRepository userRepository) : IUserService
         await userRepository.DeleteAsync(user);
 
         return true;
+    }
+
+    public async Task<User?> AuthenticateAsync(string loginInputEmail, string loginInputPassword)
+    {
+        var user = await userRepository.GetByEmailAsync(loginInputEmail);
+
+        return user ?? null;
     }
 }

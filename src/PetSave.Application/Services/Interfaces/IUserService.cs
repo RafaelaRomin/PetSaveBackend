@@ -10,4 +10,5 @@ public interface IUserService
     Task<User> CreateAsync(UserInputModel inputModel);
     Task<bool> UpdateAsync(Guid id, UserInputModel inputModel);
     Task<bool> DeleteAsync(Guid id);
+    Task<User?> AuthenticateAsync(string loginInputEmail, string loginInputPassword);
 }

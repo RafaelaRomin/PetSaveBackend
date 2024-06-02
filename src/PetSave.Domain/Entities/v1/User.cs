@@ -5,7 +5,8 @@ public class User(
     string city, 
     string state, 
     string email, 
-    string phoneNumber
+    string phoneNumber,
+    string password
     ) : BaseEntity
 {
     public string FullName { get; private set; } = fullName;
@@ -13,6 +14,7 @@ public class User(
     public string State { get; private set; } = state;
     public string Email { get; private set; } = email;
     public string PhoneNumber { get; private set; } = phoneNumber;
+    public string Password { get; private set; } = password;
     public List<Pet> Pets { get; }
 
     public static User Create(
@@ -20,9 +22,10 @@ public class User(
         string city, 
         string state, 
         string email, 
-        string phoneNumber)
+        string phoneNumber,
+        string password)
     {
-        var user = new User(fullName, city, state, email, phoneNumber);
+        var user = new User(fullName, city, state, email, phoneNumber, password);
 
         return user;
     }
@@ -32,12 +35,14 @@ public class User(
         string city, 
         string state, 
         string email, 
-        string phoneNumber)
+        string phoneNumber,
+        string password)
     {
         FullName = fullName;
         City = city;
         State = state;
         Email = email;
         PhoneNumber = phoneNumber;
+        Password = password;
     }
 }

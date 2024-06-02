@@ -1,6 +1,7 @@
 ﻿using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Services.Interfaces;
 using PetSave.Domain.Entities.v1;
+using PetSave.Domain.Enums.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
 namespace PetSave.Application.Services.v1;
@@ -9,7 +10,11 @@ public class PetService(IPetRepository petRepository) : IPetService
 {
     public async Task<IEnumerable<Pet>> GetAllAsync(int? specie)
     {
-        return await petRepository.GetAllAsync(specie);
+        var pets = await petRepository.GetAllAsync(specie);
+
+        var filteredPets = pets.Where(pet => pet.Status != DonationStatus.Unable);
+
+        return filteredPets;
     }
 
     public async Task<Pet> GetByIdAsync(Guid id)
@@ -18,7 +23,7 @@ public class PetService(IPetRepository petRepository) : IPetService
 
         if (pet is null)
             throw new Exception("não encontrado o Id");
-
+        
         return pet;
     }
 
@@ -52,14 +57,32 @@ public class PetService(IPetRepository petRepository) : IPetService
         return pet;
     }
 
-    public async Task<bool> ChangeStatus(Guid id)
+    public async Task<bool> ChangeStatus(Guid id, DonationStatus status)
     {
         var pet = await petRepository.GetById(id);
+
+        if (pet is null)
+            throw new Exception("Pet não encontrado");
+
+        pet.Status = status;
+
+        await petRepository.UpdateAsync(pet);
+
+        return true;
+    }
+
+    public async Task<bool> TemporarilyUnavailable(Guid id, int daysUnavailable)
+    {
+        var pet = await petRepository.GetById(id);
+
         if (pet is null)
             throw new Exception("Pet não encontrado");
         
         pet.UpdateUnableStatus();
+
         await petRepository.UpdateAsync(pet);
+
+        await ScheduleStatusChange(pet.Id, TimeSpan.FromDays(daysUnavailable));
 
         return true;
     }
@@ -74,5 +97,12 @@ public class PetService(IPetRepository petRepository) : IPetService
         await petRepository.DeleteAsync(pet);
 
         return true;
+    }
+    
+    
+    private async Task ScheduleStatusChange(Guid petId, TimeSpan delay)
+    {
+        await Task.Delay(delay);
+        await ChangeStatus(petId, DonationStatus.Available);
     }
 }

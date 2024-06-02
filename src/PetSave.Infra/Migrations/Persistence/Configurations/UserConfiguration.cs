@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetSave.Domain.Entities.v1;
 
-namespace PetSave.Infra.Persistence.Configurations;
+namespace PetSave.Infra.Migrations.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
