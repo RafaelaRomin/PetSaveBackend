@@ -2,7 +2,7 @@
 using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
-namespace PetSave.Infra.Migrations.Persistence.Repositories.v1;
+namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class PetDonationRepository(PetSaveDbContext dbContext) : IPetDonationRepository
 {

@@ -2,7 +2,7 @@
 using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
-namespace PetSave.Infra.Migrations.Persistence.Repositories.v1;
+namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
 {
@@ -38,6 +38,4 @@ public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
     {
         return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
     }
-
-
 }

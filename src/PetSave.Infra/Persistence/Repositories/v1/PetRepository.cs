@@ -3,7 +3,7 @@ using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Enums.v1;
 using PetSave.Domain.Repositories.Interfaces;
 
-namespace PetSave.Infra.Migrations.Persistence.Repositories.v1;
+namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
 {

@@ -5,7 +5,7 @@ using PetSave.Application.Services.Interfaces;
 using PetSave.Application.Services.v1;
 using PetSave.Domain.Repositories.Interfaces;
 using PetSave.Infra;
-using PetSave.Infra.Migrations.Persistence.Repositories.v1;
+using PetSave.Infra.Persistence.Repositories.v1;
 
 var builder = WebApplication.CreateBuilder(args);
 
