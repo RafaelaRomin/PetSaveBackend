@@ -1,4 +1,5 @@
 ﻿using PetSave.Application.Models.InputModels.v1;
+using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Domain.Entities.v1;
 
 namespace PetSave.Application.Services.Interfaces;
@@ -10,5 +11,5 @@ public interface IUserService
     Task<User> CreateAsync(UserInputModel inputModel);
     Task<bool> UpdateAsync(Guid id, UserInputModel inputModel);
     Task<bool> DeleteAsync(Guid id);
-    Task<User?> AuthenticateAsync(string loginInputEmail, string loginInputPassword);
+    Task<LoginUserViewModel> GetUserByEmailAndPasswordAsync(LoginUserInputModel loginUserInputModel);
 }

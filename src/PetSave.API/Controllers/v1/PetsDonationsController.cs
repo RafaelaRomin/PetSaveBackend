@@ -5,6 +5,7 @@ using PetSave.Application.Services.Interfaces;
 
 namespace PetSave.API.Controllers.v1;
 
+[Authorize]
 [ApiController]
 [Route("v1/pets-donations")]
 public class PetsDonationsController (

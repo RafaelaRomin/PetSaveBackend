@@ -34,8 +34,8 @@ public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<User> GetByEmailAsync(string email)
+    public async Task<User> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
     {
-        return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.Password == passwordHash);
     }
 }

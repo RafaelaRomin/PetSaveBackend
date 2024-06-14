@@ -20,7 +20,7 @@ public class PetDonationService (
     {
         var donations = await petDonationRepository.GetAllAsync();
 
-        var donationsViewModel = donations!.ConvertPetDonationsViewModel();
+        var donationsViewModel = donations.ConvertPetDonationsViewModel();
 
         return donationsViewModel.ToList();
     }
@@ -37,19 +37,15 @@ public class PetDonationService (
     public async Task<PetDonationViewModel> CreateAsync(PetDonationInputModel inputModel)
     {
         
-        //var validationContext = new ValidationContext<PetDonationInputModel>(inputModel);
-        
         var pet = await petRepository.GetById(inputModel.IdPet);
+        
 
         if (pet is null)
             throw new Exception("Pet não encontrado");
         
         if (pet.Status == DonationStatus.Unable)
             throw new Exception("Pet não está apto para doação");
-
-        //var validationResult = await petValidator.ValidateAsync(validationContext);
-        //if (!validationResult.IsValid)
-        //    throw new ValidationException(validationResult.Errors);
+        
 
         var donation = new PetDonation(
             inputModel.IdPet, 

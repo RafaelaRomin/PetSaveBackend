@@ -1,5 +1,6 @@
 ﻿using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Services.Interfaces;
+using PetSave.Application.Validators.v1;
 using PetSave.Domain.Entities.v1;
 using PetSave.Domain.Enums.v1;
 using PetSave.Domain.Repositories.Interfaces;
@@ -29,6 +30,18 @@ public class PetService(IPetRepository petRepository) : IPetService
 
     public async Task<Pet> CreateAsync(PetInputModel inputModel)
     {
+        var validator = new PetValidator();
+        
+        var result = validator.Validate(inputModel);
+        
+        if(! result.IsValid) 
+        {
+            foreach(var failure in result.Errors)
+            {
+                throw new Exception("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+            }
+        }
+        
         var pet = Pet.Create(
             inputModel.Name, 
             inputModel.Race, 
@@ -45,6 +58,18 @@ public class PetService(IPetRepository petRepository) : IPetService
 
     public async Task<Pet> UpdateAsync(Guid id, PetInputModel inputModel)
     {
+        var validator = new PetValidator();
+        
+        var result = validator.Validate(inputModel);
+        
+        if(! result.IsValid) 
+        {
+            foreach(var failure in result.Errors)
+            {
+                throw new Exception("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+            }
+        }
+        
         var pet = await petRepository.GetById(id);
 
         if (pet is null)

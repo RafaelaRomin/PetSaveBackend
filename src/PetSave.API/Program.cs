@@ -9,15 +9,9 @@ using PetSave.Infra.Persistence.Repositories.v1;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<PetSaveDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PetSaveConnectionString")));
+var configuration = builder.Configuration;
 
-builder.Services.AddScoped<IPetService, PetService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPetRepository, PetRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPetDonationRepository, PetDonationRepository>();
-builder.Services.AddScoped<IPetDonationService, PetDonationService>();
+builder.Services.AddInfrastructure(configuration);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
