@@ -39,7 +39,6 @@ public class AuthService(IConfiguration configuration) : IAuthService
 
         return stringToken;
     }
-
     public string ComputeSha256Hash(string password)
     {
         using (SHA256 sha256Hash = SHA256.Create())
@@ -55,5 +54,6 @@ public class AuthService(IConfiguration configuration) : IAuthService
 
             return builder.ToString();
         }
+
     }
 }

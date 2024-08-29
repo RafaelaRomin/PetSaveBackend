@@ -7,20 +7,40 @@ namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
 {
-    public async Task<List<Pet>> GetAllAsync(int? specie)
+    public async Task<List<Pet>> GetAllAsync(string? filter)
     {
-        IQueryable<Pet> query = dbContext.Pets;
+        IQueryable<Pet> query = dbContext.Pets.Include(p => p.Tutor);
 
-        if (specie.HasValue)
+        var pets = await query.ToListAsync();
+
+        if (!string.IsNullOrEmpty(filter))
         {
-            query = query.Where(s => (int)s.Species == specie.Value);
+            pets = pets.Where(p =>
+                p.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                p.Species.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                p.Weight.ToString().Contains(filter) ||
+                p.LastDonation.ToString("dd/MM/yyyy").Contains(filter) ||
+                p.Status.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                p.Tutor.FullName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                p.Tutor.PhoneNumber.Contains(filter)
+            ).ToList();
         }
-        return await query.ToListAsync();
+
+        return pets;
+    }
+    
+    public async Task<Pet> GetById(Guid id)
+    {
+        return await dbContext.Pets
+            .Include(p => p.Tutor)
+            .SingleOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task<Pet?> GetById(Guid id)
+    public async Task<List<Pet>> GetByTutorIdAsync(Guid tutorId)
     {
-        return await dbContext.Pets.SingleOrDefaultAsync(p => p.Id == id);
+        return await dbContext.Pets.Include(p => p.Tutor)
+            .Where(p => p.Tutor.Id == tutorId)
+            .ToListAsync();
     }
 
     public async Task AddAsync(Pet pet)

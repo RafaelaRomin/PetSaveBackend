@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Services.Interfaces;
-using PetSave.Infra.Auth;
 
 namespace PetSave.API.Controllers.v1;
 
-[Authorize]
 [ApiController]
 [Route("v1/users")]
 public class UsersController (IUserService userService) : ControllerBase

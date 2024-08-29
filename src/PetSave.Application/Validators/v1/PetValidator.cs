@@ -8,9 +8,6 @@ public class PetValidator : AbstractValidator<PetInputModel>
 {
     public PetValidator()
     {
-        RuleFor(x => x.Species)
-            .NotEmpty()
-            .WithMessage("A espécie do pet deve ser especificada.");
 
         RuleFor(x => x.Weight)
             .GreaterThan(0)

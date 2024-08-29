@@ -13,11 +13,9 @@ public static class MappingPetViewModel
                 Name = pet.Name,
                 Specie = pet.Species.ToString(),
                 Weight = pet.Weight,
-                LastDonation = pet.LastDonation.ToString("dd/MM/yyyy"),
                 DonationStatus = pet.Status.ToString(),
                 TutorName = pet.Tutor.FullName,
                 TutorPhoneNumber = pet.Tutor.PhoneNumber
-                
             }).ToList();
     }
 
@@ -28,7 +26,6 @@ public static class MappingPetViewModel
             Name = pet.Name,
             Specie = pet.Species.ToString(),
             Weight = pet.Weight,
-            LastDonation = pet.LastDonation.ToString("dd/MM/yyyy"),
             DonationStatus = pet.Status.ToString(),
             TutorName = pet.Tutor.FullName,
             TutorPhoneNumber = pet.Tutor.PhoneNumber

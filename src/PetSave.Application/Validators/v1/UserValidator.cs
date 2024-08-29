@@ -20,10 +20,6 @@ public class UserValidator : AbstractValidator<UserInputModel>
             .NotEmpty()
             .WithMessage("O campo telefone é obrigatório!");
         
-        RuleFor(user => user.PhoneNumber)
-            .Matches(@"^(?:\(\d{2}\)\s9\d{4}-\d{4}|\d{4}-\d{4}|\d{2}\s9\d{4}-\d{4}|55\d{11})$")
-            .WithMessage("Número invalido de telefone!");
-        
         RuleFor(user => user.Password)
             .NotEmpty()
             .WithMessage("O campo senha é obrigatório!")

@@ -1,4 +1,6 @@
 ﻿using PetSave.Application.Models.InputModels.v1;
+using PetSave.Application.Models.ViewModels.MappingViewModels;
+using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
 using PetSave.Application.Validators.v1;
 using PetSave.Domain.Entities.v1;
@@ -9,23 +11,42 @@ namespace PetSave.Application.Services.v1;
 
 public class PetService(IPetRepository petRepository) : IPetService
 {
-    public async Task<IEnumerable<Pet>> GetAllAsync(int? specie)
+    public async Task<IEnumerable<PetViewModel>> GetAllAsync(string? filter)
     {
-        var pets = await petRepository.GetAllAsync(specie);
+        
+        var pets = await petRepository.GetAllAsync(filter);
 
         var filteredPets = pets.Where(pet => pet.Status != DonationStatus.Unable);
+        
+        var petViewModels = filteredPets.ConvertPetsViewModel();
 
-        return filteredPets;
+        return petViewModels;
+        
     }
 
-    public async Task<Pet> GetByIdAsync(Guid id)
+    public async Task<PetViewModel> GetByIdAsync(Guid id)
     {
         var pet = await petRepository.GetById(id);
-
+        
         if (pet is null)
             throw new Exception("não encontrado o Id");
-        
-        return pet;
+    
+        var petViewModels = pet.ConvertPetViewModel();
+    
+        return petViewModels;
+    }
+    
+
+    public async Task<IEnumerable<PetViewModel>> GetByTutorIdAsync(Guid tutorId)
+    {
+        var pets = await petRepository.GetByTutorIdAsync(tutorId);
+
+        if (pets == null || !pets.Any())
+            throw new Exception("No pets found for the given tutor ID");
+
+        var petViewModels = pets.ConvertPetsViewModel();
+
+        return petViewModels;
     }
 
     public async Task<Pet> CreateAsync(PetInputModel inputModel)
@@ -56,7 +77,7 @@ public class PetService(IPetRepository petRepository) : IPetService
         return pet;
     }
 
-    public async Task<Pet> UpdateAsync(Guid id, PetInputModel inputModel)
+    public async Task<PetViewModel> UpdateAsync(Guid id, PetInputModel inputModel)
     {
         var validator = new PetValidator();
         
@@ -79,7 +100,9 @@ public class PetService(IPetRepository petRepository) : IPetService
 
         await petRepository.UpdateAsync(pet);
 
-        return pet;
+        var petViewModel = pet.ConvertPetViewModel();
+
+        return petViewModel;
     }
 
     public async Task<bool> ChangeStatus(Guid id, DonationStatus status)

@@ -1,23 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetSave.Application.Models.InputModels.v1;
+using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
 
 namespace PetSave.API.Controllers.v1;
 
-[Authorize]
 [ApiController]
 [Route("v1/pets")]
 public class PetsController(IPetService petService) : ControllerBase
 {
+    
     [HttpGet]
-    public async Task<IActionResult> GetByFilter([FromQuery] int? specie)
+    public async Task<IActionResult> GetByFilter([FromQuery] string? filter)
     {
-        var pets = await petService.GetAllAsync(specie);
+        var pets = await petService.GetAllAsync(filter);
 
         return Ok(pets);
     }
 
+    [HttpGet("by-tutor/{tutorId}")]
+    public async Task<IActionResult> GetByTutorId(Guid tutorId)
+    {
+        var pets = await petService.GetByTutorIdAsync(tutorId);
+
+        return Ok(pets);
+    }
+    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -31,7 +40,7 @@ public class PetsController(IPetService petService) : ControllerBase
     {
         var pet = await petService.CreateAsync(inputModel);
 
-        return CreatedAtAction(nameof(GetById), new { id = pet.Id }, pet);
+        return Ok(pet);
     }
 
     [HttpPut("{id}")]
