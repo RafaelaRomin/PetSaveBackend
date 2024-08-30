@@ -16,7 +16,7 @@ public class AuthService(IConfiguration configuration) : IAuthService
     {
         var issuer = configuration["Jwt:Issuer"];
         var audience = configuration["Jwt:Audience"];
-        var key = configuration["Jwt:key"];
+        var key = configuration["Jwt:Key"];
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256); ;
