@@ -22,7 +22,6 @@ function loadQuestion() {
         resultElement.textContent = '';
         resetBtn.style.display = 'none';
         
-        // Verifica se é a última pergunta
         if (currentQuestion === questions.length - 1) {
             yesBtn.textContent = 'Nunca recebeu';
             noBtn.textContent = 'Já recebeu';
