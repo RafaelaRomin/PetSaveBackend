@@ -8,9 +8,9 @@
 </head>
 <body>
     <header>
-        <img src="../docs/images/logo.png" alt="PetSave Logo" class="logo">
+        <img src="images/logo.png" alt="PetSave Logo" class="logo">
         <h1>PetSave</h1>
-        <p> Um App para ajudar na Doação de Sangue para Pets</p>
+        <p>Um App para ajudar na Doação de Sangue para Pets</p>
     </header>
     
     <main>
@@ -41,10 +41,24 @@
             <p>Seu pet pode salvar vidas, mas ele depende de você!</p>
             <a href="https://github.com/RafaelaRomin/PetSaveBackend" target="_blank" class="button">Ver projeto no GitHub</a>
         </section>
+
+        <section class="card" id="quiz-section">
+            <h2>Seu pet pode ser um doador?</h2>
+            <p>Responda a estas perguntas para descobrir se seu pet pode ser um doador de sangue:</p>
+            <div id="quiz">
+                <p id="question"></p>
+                <button id="yes-btn" class="button">Sim</button>
+                <button id="no-btn" class="button">Não</button>
+            </div>
+            <p id="result"></p>
+            <button id="reset-btn" class="button" style="display: none;">Refazer o Teste</button>
+        </section>
     </main>
     
     <footer>
         <p>&copy; 2024 PetSave. Todos os direitos reservados.</p>
     </footer>
+
+    <script src="js/quiz.js"></script>
 </body>
 </html>

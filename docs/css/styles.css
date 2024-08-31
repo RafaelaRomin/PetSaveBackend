@@ -17,6 +17,20 @@ header {
     border-radius: 10px;
 }
 
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+header h1 {
+    display: none;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
 
 h1, h2 {
     color: #ff6b6b;
@@ -67,18 +81,15 @@ footer {
     color: #777;
 }
 
-.logo {
-    width: 150px;
-    height: auto;
-    margin-bottom: 1rem;
+#quiz-section {
+    text-align: center;
 }
 
-header h1 {
-    display: none;
+#quiz button {
+    margin: 10px;
 }
 
-header p {
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
+#result {
+    font-weight: bold;
+    margin-top: 20px;
 }
-
