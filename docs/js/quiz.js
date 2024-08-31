@@ -21,6 +21,15 @@ function loadQuestion() {
         questionElement.textContent = questions[currentQuestion];
         resultElement.textContent = '';
         resetBtn.style.display = 'none';
+        
+        // Verifica se é a última pergunta
+        if (currentQuestion === questions.length - 1) {
+            yesBtn.textContent = 'Nunca recebeu';
+            noBtn.textContent = 'Já recebeu';
+        } else {
+            yesBtn.textContent = 'Sim';
+            noBtn.textContent = 'Não';
+        }
     } else {
         showResult();
     }
@@ -44,6 +53,8 @@ function resetQuiz() {
     quizElement.style.display = 'block';
     resultElement.textContent = '';
     resetBtn.style.display = 'none';
+    yesBtn.textContent = 'Sim';
+    noBtn.textContent = 'Não';
     loadQuestion();
 }
 
