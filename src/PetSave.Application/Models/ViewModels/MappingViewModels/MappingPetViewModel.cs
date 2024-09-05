@@ -10,9 +10,13 @@ public static class MappingPetViewModel
         return (from pet in pets
             select new PetViewModel
             {
+                Id = pet.Id,
                 Name = pet.Name,
+                Race = pet.Race,
+                Age = pet.Age,
                 Specie = pet.Species.ToString(),
                 Weight = pet.Weight,
+                Description = pet.Description,
                 DonationStatus = pet.Status.ToString(),
                 TutorName = pet.Tutor.FullName,
                 TutorPhoneNumber = pet.Tutor.PhoneNumber
@@ -23,9 +27,13 @@ public static class MappingPetViewModel
     {
         return new PetViewModel
         {
+            Id = pet.Id,
             Name = pet.Name,
+            Race = pet.Race,
+            Age = pet.Age,
             Specie = pet.Species.ToString(),
             Weight = pet.Weight,
+            Description = pet.Description,
             DonationStatus = pet.Status.ToString(),
             TutorName = pet.Tutor.FullName,
             TutorPhoneNumber = pet.Tutor.PhoneNumber

@@ -8,18 +8,26 @@ public class UserRepository(PetSaveDbContext dbContext) : IUserRepository
 {
     public async Task<List<User>> GetAllAsync()
     {
-        return await dbContext.Users.ToListAsync();
+        return await dbContext.Users.Include(p => p.Pets).ToListAsync();
     }
 
     public async Task<User> GetById(Guid id)
     {
-        return await dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
+        
+        var user = await dbContext.Users.Include(p => p.Pets)
+            .SingleOrDefaultAsync(u => u.Id == id);
+        
+        return user;
     }
 
     public async Task AddAsync(User user)
     {
         await dbContext.Users.AddAsync(user);
         await dbContext.SaveChangesAsync();
+        
+        await dbContext.Entry(user)
+            .Collection(u => u.Pets)
+            .LoadAsync();
     }
 
     public async Task UpdateAsync(User user)

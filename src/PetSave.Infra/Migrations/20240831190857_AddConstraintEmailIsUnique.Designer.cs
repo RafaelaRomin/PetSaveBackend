@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetSave.Infra;
 
@@ -11,9 +12,11 @@ using PetSave.Infra;
 namespace PetSave.Infra.Migrations
 {
     [DbContext(typeof(PetSaveDbContext))]
-    partial class PetSaveDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240831190857_AddConstraintEmailIsUnique")]
+    partial class AddConstraintEmailIsUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

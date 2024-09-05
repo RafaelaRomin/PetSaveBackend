@@ -35,14 +35,12 @@ public class User(
         string city, 
         string state, 
         string email, 
-        string phoneNumber,
-        string password)
+        string phoneNumber)
     {
         FullName = fullName;
         City = city;
         State = state;
         Email = email;
         PhoneNumber = phoneNumber;
-        Password = password;
     }
 }

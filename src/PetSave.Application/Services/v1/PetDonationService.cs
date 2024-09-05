@@ -51,11 +51,12 @@ public class PetDonationService (
             inputModel.IdPet, 
             inputModel.DonationDate);
         
+        
         await petDonationRepository.CreateAsync(donation);
 
         await petService.ChangeStatus(pet.Id, DonationStatus.Unable);
-
-        await ScheduleStatusChange(pet.Id, TimeSpan.FromDays(90));
+        
+        ScheduleStatusChange(pet.Id, TimeSpan.FromDays(90));
 
         var donationDb = await petDonationRepository.GetByIdAsync(donation.Id);
         
@@ -67,9 +68,13 @@ public class PetDonationService (
         return donationViewModel;
     }
     
-    private async Task ScheduleStatusChange(Guid petId, TimeSpan delay)
+    private void ScheduleStatusChange(Guid petId, TimeSpan delay)
     {
-        await Task.Delay(delay);
-        await petService.ChangeStatus(petId, DonationStatus.Available);
+        Task.Run(async () =>
+        {
+            await Task.Delay(delay);
+            await petService.ChangeStatus(petId, DonationStatus.Available);
+        });
     }
+    
 }

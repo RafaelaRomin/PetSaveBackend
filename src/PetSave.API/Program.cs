@@ -1,11 +1,6 @@
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using PetSave.Application.Services.Interfaces;
-using PetSave.Application.Services.v1;
-using PetSave.Domain.Repositories.Interfaces;
 using PetSave.Infra;
-using PetSave.Infra.Persistence.Repositories.v1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,8 +49,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
-app.UseCors("AllowAll");
 
 app.UseSwagger();
 app.UseSwaggerUI();

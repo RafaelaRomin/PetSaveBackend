@@ -1,4 +1,5 @@
 ﻿using PetSave.Application.Models.InputModels.v1;
+using PetSave.Application.Models.ViewModels.MappingViewModels;
 using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
 using PetSave.Application.Validators.v1;
@@ -10,25 +11,34 @@ namespace PetSave.Application.Services.v1;
 
 public class UserService (IUserRepository userRepository, IAuthService authService) : IUserService
 {
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<UserViewModel>> GetAllAsync()
     {
-        return await userRepository.GetAllAsync();
+        
+        var usersList = await userRepository.GetAllAsync();
+        
+        var userViewModel = usersList.ConvertUsersToViewModel();
+        
+        return userViewModel;
     }
 
-    public async Task<User> GetByIdAsync(Guid id)
+    public async Task<UserViewModel> GetByIdAsync(Guid id)
     {
         var user = await userRepository.GetById(id);
         if (user is null) 
             throw new Exception("Usuário não encontrado!");
         
-        return user;
+        var userViewModel = user.ConvertUserToViewModel();
+        
+        return userViewModel;
     }
 
-    public async Task<User> CreateAsync(UserInputModel inputModel)
+    public async Task<UserViewModel> CreateAsync(UserInputModel inputModel)
     {
         var validator = new UserValidator();
         
         var hashPassword = authService.ComputeSha256Hash(inputModel.Password);
+        
+        
         
         var user = User.Create(
             inputModel.FullName, 
@@ -51,29 +61,28 @@ public class UserService (IUserRepository userRepository, IAuthService authServi
 
         await userRepository.AddAsync(user);
 
-        return user;
+        var userViewModel = user.ConvertUserToViewModel();
+        
+        return userViewModel;
+        
     }
 
-    public async Task<bool> UpdateAsync(Guid id, UserInputModel inputModel)
+    public async Task<bool> UpdateAsync(Guid id, UserUpdateInputModel inputModel)
     {
-        var validator = new UserValidator();
+        
         var user = await userRepository.GetById(id);
 
         if (user is null) 
             throw new Exception("Usuário não encontrado!");
         
         
-        var result = validator.Validate(inputModel);
-        
-        if(! result.IsValid) 
-        {
-            foreach(var failure in result.Errors)
-            {
-                throw new Exception("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
-            }
-        }
-        
-        user.Update(inputModel.FullName, inputModel.City, inputModel.State, inputModel.Email, inputModel.PhoneNumber, inputModel.Password);
+        user.Update(
+            inputModel.FullName ?? user.FullName, 
+            inputModel.City ?? user.City, 
+            inputModel.State ?? user.State, 
+            inputModel.Email ?? user.Email, 
+            inputModel.PhoneNumber ?? user.PhoneNumber
+            );
 
         await userRepository.UpdateAsync(user);
 
@@ -104,7 +113,9 @@ public class UserService (IUserRepository userRepository, IAuthService authServi
         return new LoginUserViewModel
         {   
             Email = user.Email,
-            Token = token
+            Name = user.FullName,
+            Token = token,
+            Id = user.Id
         };
     }
 }

@@ -6,10 +6,10 @@ namespace PetSave.Application.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<IEnumerable<User>> GetAllAsync();
-    Task<User> GetByIdAsync(Guid id);
-    Task<User> CreateAsync(UserInputModel inputModel);
-    Task<bool> UpdateAsync(Guid id, UserInputModel inputModel);
+    Task<IEnumerable<UserViewModel>> GetAllAsync();
+    Task<UserViewModel> GetByIdAsync(Guid id);
+    Task<UserViewModel> CreateAsync(UserInputModel inputModel);
+    Task<bool> UpdateAsync(Guid id, UserUpdateInputModel inputModel);
     Task<bool> DeleteAsync(Guid id);
     Task<LoginUserViewModel> GetUserByEmailAndPasswordAsync(LoginUserInputModel loginUserInputModel);
 }

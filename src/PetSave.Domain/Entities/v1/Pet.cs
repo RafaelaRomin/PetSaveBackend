@@ -38,8 +38,8 @@ public class Pet(
         return pet;
     }
 
-    public void Update(string name,
-        string race,
+    public void Update(string? name,
+        string? race,
         double weight,
         double age,
         string? description)

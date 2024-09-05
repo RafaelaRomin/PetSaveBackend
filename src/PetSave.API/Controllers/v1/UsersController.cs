@@ -6,6 +6,7 @@ using PetSave.Application.Services.Interfaces;
 namespace PetSave.API.Controllers.v1;
 
 [ApiController]
+[Authorize]
 [Route("v1/users")]
 public class UsersController (IUserService userService) : ControllerBase
 {
@@ -31,7 +32,7 @@ public class UsersController (IUserService userService) : ControllerBase
     {
         var user = await userService.CreateAsync(inputModel);
 
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        return Ok(user);
     }
     
     [HttpPost("login")]
@@ -46,7 +47,7 @@ public class UsersController (IUserService userService) : ControllerBase
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(Guid id, UserInputModel inputModel)
+    public async Task<IActionResult> Put(Guid id, UserUpdateInputModel inputModel)
     {
         await userService.UpdateAsync(id, inputModel);
 

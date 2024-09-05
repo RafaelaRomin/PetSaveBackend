@@ -11,10 +11,10 @@ namespace PetSave.Application.Services.v1;
 
 public class PetService(IPetRepository petRepository) : IPetService
 {
-    public async Task<IEnumerable<PetViewModel>> GetAllAsync(string? filter)
+    public async Task<IEnumerable<PetViewModel>> GetAllAsync(string? filter, Species? specieSelected)
     {
         
-        var pets = await petRepository.GetAllAsync(filter);
+        var pets = await petRepository.GetAllAsync(filter, specieSelected);
 
         var filteredPets = pets.Where(pet => pet.Status != DonationStatus.Unable);
         
@@ -77,26 +77,22 @@ public class PetService(IPetRepository petRepository) : IPetService
         return pet;
     }
 
-    public async Task<PetViewModel> UpdateAsync(Guid id, PetInputModel inputModel)
+    public async Task<PetViewModel> UpdateAsync(Guid id, Guid tutorId, PetUpdateInputModel inputModel)
     {
-        var validator = new PetValidator();
-        
-        var result = validator.Validate(inputModel);
-        
-        if(! result.IsValid) 
-        {
-            foreach(var failure in result.Errors)
-            {
-                throw new Exception("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
-            }
-        }
         
         var pet = await petRepository.GetById(id);
 
         if (pet is null)
             throw new Exception("Pet não encontrado");
         
-        pet.Update(inputModel.Name, inputModel.Race, inputModel.Weight, inputModel.Age, inputModel.Description);
+        pet.Update
+        (
+        inputModel.Name ?? pet.Name, 
+        inputModel.Race ?? pet.Race, 
+        inputModel.Weight ?? pet.Weight, 
+        inputModel.Age ?? pet.Age, 
+        inputModel.Description ?? pet.Description
+        );
 
         await petRepository.UpdateAsync(pet);
 
@@ -129,8 +125,8 @@ public class PetService(IPetRepository petRepository) : IPetService
         pet.UpdateUnableStatus();
 
         await petRepository.UpdateAsync(pet);
-
-        await ScheduleStatusChange(pet.Id, TimeSpan.FromDays(daysUnavailable));
+        
+        ScheduleStatusChange(pet.Id, TimeSpan.FromDays(daysUnavailable));
 
         return true;
     }
@@ -148,9 +144,12 @@ public class PetService(IPetRepository petRepository) : IPetService
     }
     
     
-    private async Task ScheduleStatusChange(Guid petId, TimeSpan delay)
+    private void ScheduleStatusChange(Guid petId, TimeSpan delay)
     {
-        await Task.Delay(delay);
-        await ChangeStatus(petId, DonationStatus.Available);
+        Task.Run(async () =>
+        {
+            await Task.Delay(delay);
+            await ChangeStatus(petId, DonationStatus.Available);
+        });
     }
 }

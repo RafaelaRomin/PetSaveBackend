@@ -3,18 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using PetSave.Application.Models.InputModels.v1;
 using PetSave.Application.Models.ViewModels.v1;
 using PetSave.Application.Services.Interfaces;
+using PetSave.Domain.Enums.v1;
 
 namespace PetSave.API.Controllers.v1;
 
 [ApiController]
+[Authorize]
 [Route("v1/pets")]
 public class PetsController(IPetService petService) : ControllerBase
 {
     
     [HttpGet]
-    public async Task<IActionResult> GetByFilter([FromQuery] string? filter)
-    {
-        var pets = await petService.GetAllAsync(filter);
+    public async Task<IActionResult> GetByFilter([FromQuery] string? filter, [FromQuery] Species? specieSelected)
+    { 
+        var pets = await petService.GetAllAsync(filter, specieSelected);
 
         return Ok(pets);
     }
@@ -43,18 +45,26 @@ public class PetsController(IPetService petService) : ControllerBase
         return Ok(pet);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(Guid id, PetInputModel inputModel)
+    [HttpPut("{id}/tutor/{tutorId}")]
+    public async Task<IActionResult> Put(Guid id, Guid tutorId,  PetUpdateInputModel inputModel)
     {
-        await  petService.UpdateAsync(id, inputModel);
+        await  petService.UpdateAsync(id, tutorId, inputModel);
         
         return NoContent();
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> TemporarilyUnavailable(Guid petId, int daysUnavailable)
+    public async Task<IActionResult> TemporarilyUnavailable(Guid id, int daysUnavailable)
     {
-        await petService.TemporarilyUnavailable(petId, daysUnavailable);
+        await petService.TemporarilyUnavailable(id, daysUnavailable);
+
+        return NoContent();
+    }
+    
+    [HttpPatch("activate/{id}")]
+    public async Task<IActionResult> ActivatePet(Guid id, DonationStatus donationStatus)
+    {
+        await petService.ChangeStatus(id, donationStatus);
 
         return NoContent();
     }

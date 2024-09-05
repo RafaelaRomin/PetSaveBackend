@@ -15,5 +15,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMany(p => p.Pets)
             .WithOne(t => t.Tutor)
             .HasForeignKey(f => f.IdTutor);
+
+        builder
+            .HasIndex(e => e.Email)
+            .IsUnique();
     }
 }

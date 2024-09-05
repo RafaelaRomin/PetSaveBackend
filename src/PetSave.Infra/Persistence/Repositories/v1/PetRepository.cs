@@ -7,15 +7,19 @@ namespace PetSave.Infra.Persistence.Repositories.v1;
 
 public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
 {
-    public async Task<List<Pet>> GetAllAsync(string? filter)
+    public async Task<List<Pet>> GetAllAsync(string? filter, Species? specieSelected)
     {
         IQueryable<Pet> query = dbContext.Pets.Include(p => p.Tutor);
-
-        var pets = await query.ToListAsync();
-
+        
+        if (specieSelected != null)
+        {
+            query = query.Where(p => p.Species == specieSelected);
+        }
+        
+        
         if (!string.IsNullOrEmpty(filter))
         {
-            pets = pets.Where(p =>
+            query = query.Where(p =>
                 p.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                 p.Species.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                 p.Weight.ToString().Contains(filter) ||
@@ -23,10 +27,10 @@ public class PetRepository(PetSaveDbContext dbContext) : IPetRepository
                 p.Status.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                 p.Tutor.FullName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                 p.Tutor.PhoneNumber.Contains(filter)
-            ).ToList();
+            );
         }
-
-        return pets;
+        
+        return await query.ToListAsync();
     }
     
     public async Task<Pet> GetById(Guid id)

@@ -14,7 +14,8 @@ public static class MappingUserViewModel
                 FullName = user.FullName,
                 City = user.City,
                 State = user.State,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
             }).ToList();
     }
 
@@ -39,6 +40,7 @@ public static class MappingUserViewModel
             City = user.City,
             State = user.State,
             PhoneNumber = user.PhoneNumber,
+            Email = user.Email,
             Pets = list
         };
     }
